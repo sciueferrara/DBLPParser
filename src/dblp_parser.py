@@ -106,6 +106,22 @@ def parse_all(dblp_path, save_path, include_key=False):
     f.close()
     log_msg("FINISHED...")  # load the saved results line by line using json
 
+    
+def parse_filtered(dblp_path, save_path, include_key=False):
+    log_msg("PROCESS: Start parsing...")
+    f = open(save_path, 'w', encoding='utf8')
+    for _, elem in context_iter(dblp_path):
+        if elem.tag in all_elements:
+            attrib_values = extract_feature(elem, all_features, include_key)
+            if int(attrib_values['year']) < 2015:
+                continue
+            if not all(s in attrib_values['title'] for s in ['priva', 'recommend']) or all(s in attrib_values['title'] for s in ['federate', 'recommend']):
+                continue
+            print(attrib_values)
+            f.write(str(attrib_values) + '\n')
+        clear_element(elem)
+    f.close()
+    log_msg("FINISHED...")  # load the saved results line by line using json
 
 def parse_entity(dblp_path, save_path, type_name, features=None, save_to_csv=False, include_key=False):
     """Parse specific elements according to the given type name and features"""
