@@ -95,15 +95,15 @@ def extract_feature(elem, features, include_key=False):
     return attribs
 
 
-def parse_all(dblp_path, save_path, include_key=False):
+def parse_all(dblp_path, save_path=None, include_key=False):
     log_msg("PROCESS: Start parsing...")
-    f = open(save_path, 'w', encoding='utf8')
+    #f = open(save_path, 'w', encoding='utf8')
     for _, elem in context_iter(dblp_path):
         if elem.tag in all_elements:
             attrib_values = extract_feature(elem, all_features, include_key)
-            f.write(str(attrib_values) + '\n')
+            #f.write(str(attrib_values) + '\n')
         clear_element(elem)
-    f.close()
+    #f.close()
     log_msg("FINISHED...")  # load the saved results line by line using json
 
     
@@ -236,7 +236,7 @@ def main():
     except IOError:
         log_msg("ERROR: Failed to load file \"{}\". Please check your XML and DTD files.".format(dblp_path))
         exit()
-    parse_filtered(dblp_path)
+    parse_all(dblp_path)
 
 
 if __name__ == '__main__':
