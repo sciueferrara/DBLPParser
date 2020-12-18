@@ -112,6 +112,7 @@ def parse_filtered(dblp_path, save_path=None, include_key=False):
     # f = open(save_path, 'w', encoding='utf8')
     for _, elem in context_iter(dblp_path):
         if elem.tag in all_elements:
+            print(elem.tag)
             attrib_values = extract_feature(elem, all_features, include_key)
             if int(attrib_values['year'][0]) < 2015:
                 continue
