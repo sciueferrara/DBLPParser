@@ -107,9 +107,9 @@ def parse_all(dblp_path, save_path, include_key=False):
     log_msg("FINISHED...")  # load the saved results line by line using json
 
     
-def parse_filtered(dblp_path, save_path, include_key=False):
+def parse_filtered(dblp_path, save_path=None, include_key=False):
     log_msg("PROCESS: Start parsing...")
-    f = open(save_path, 'w', encoding='utf8')
+    # f = open(save_path, 'w', encoding='utf8')
     for _, elem in context_iter(dblp_path):
         if elem.tag in all_elements:
             attrib_values = extract_feature(elem, all_features, include_key)
@@ -118,9 +118,9 @@ def parse_filtered(dblp_path, save_path, include_key=False):
             if not all(s in attrib_values['title'] for s in ['priva', 'recommend']) or all(s in attrib_values['title'] for s in ['federate', 'recommend']):
                 continue
             print(attrib_values)
-            f.write(str(attrib_values) + '\n')
+            # f.write(str(attrib_values) + '\n')
         clear_element(elem)
-    f.close()
+    # f.close()
     log_msg("FINISHED...")  # load the saved results line by line using json
 
 def parse_entity(dblp_path, save_path, type_name, features=None, save_to_csv=False, include_key=False):
