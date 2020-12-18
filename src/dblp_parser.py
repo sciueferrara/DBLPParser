@@ -87,7 +87,7 @@ def extract_feature(elem, features, include_key=False):
         if sub.tag == 'title':
             text = re.sub("<.*?>", "", etree.tostring(sub).decode('utf-8')) if sub.text is None else sub.text
         elif sub.tag == 'pages':
-            text = count_pages(sub.text)
+            text = ''
         else:
             text = sub.text
         if text is not None and len(text) > 0:
