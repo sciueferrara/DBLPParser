@@ -3,7 +3,7 @@ from lxml import etree
 
 # all of the element types in dblp
 all_elements = {"article", "inproceedings", "proceedings", "book", "incollection", "phdthesis", "mastersthesis", "www"}
-my_elements = {"article", "inproceedings", "phdthesis"}
+my_elements = {"article", "inproceedings"}
 # all of the feature types in dblp
 all_features = {"address", "author", "booktitle", "cdrom", "chapter", "cite", "crossref", "editor", "ee", "isbn",
                 "journal", "month", "note", "number", "pages", "publisher", "school", "series", "title", "url",
@@ -20,6 +20,8 @@ def extract_and_check_features(elem):
     for child in elem:
         if child.tag in all_features:
             if child.tag == 'year' and int(child.text) < 2015:
+                return
+            if child.tag == 'title' and not child.text:
                 return
             if child.tag == 'title'\
                     and not (all(s in child.text.lower() for s in ['priva', 'recommend'])
