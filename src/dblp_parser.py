@@ -7,7 +7,6 @@ import re
 
 # all of the element types in dblp
 all_elements = {"article", "inproceedings", "proceedings", "book", "incollection", "phdthesis", "mastersthesis", "www"}
-my_elements = {"article", "inproceedings"}
 # all of the feature types in dblp
 all_features = {"address", "author", "booktitle", "cdrom", "chapter", "cite", "crossref", "editor", "ee", "isbn",
                 "journal", "month", "note", "number", "pages", "publisher", "school", "series", "title", "url",
@@ -88,7 +87,7 @@ def extract_feature(elem, features, include_key=False):
         if sub.tag == 'title':
             text = re.sub("<.*?>", "", etree.tostring(sub).decode('utf-8')) if sub.text is None else sub.text
         elif sub.tag == 'pages':
-            text = ''
+            text = count_pages(sub.text)
         else:
             text = sub.text
         if text is not None and len(text) > 0:
@@ -97,45 +96,17 @@ def extract_feature(elem, features, include_key=False):
     return attribs
 
 
-def parse_all(dblp_path, save_path=None, include_key=False):
-    log_msg("PROCESS: Start parsing...")
-    #f = open(save_path, 'w', encoding='utf8')
-    for _, elem in context_iter(dblp_path):
-        if elem.tag in all_elements:
-            attrib_values = extract_feature(elem, all_features, include_key)
-            #f.write(str(attrib_values) + '\n')
-        clear_element(elem)
-    #f.close()
-    log_msg("FINISHED...")  # load the saved results line by line using json
-
-    
-def parse_filtered(dblp_path, save_path=None, include_key=False):
-    counter = 0
+def parse_all(dblp_path, save_path, include_key=False):
     log_msg("PROCESS: Start parsing...")
     f = open(save_path, 'w', encoding='utf8')
     for _, elem in context_iter(dblp_path):
-        if elem.tag in my_elements:
+        if elem.tag in all_elements:
             attrib_values = extract_feature(elem, all_features, include_key)
-            print(attrib_values)
-            # print(etree.tostring(elem))
-           
-            # attrib_values = extract_feature(elem, all_features, include_key=True)
-            # print(elem.attrib)
-            # if not attrib_values['year']:
-            #    continue
-            # print(attrib_values['year'][0], attrib_values['title'][0])
-            # if int(attrib_values['year'][0]) < 2015:
-            #     continue
-            # if not all(s in attrib_values['title'][0] for s in ['priva', 'recommend']) or all(s in attrib_values['title'][0] for s in ['federate', 'recommend']):
-            #    continue
-            # for child in elem:
-            #    print(child.tag)
-            counter += 1
-            # print("found", counter)
-            # f.write('<a href="' + attrib_values['ee'][0] + '">link</a>\t' + attrib_values['key'][0] + '\t' + attrib_values['author'][0] + '\t' + (attrib_values['journal'][0] or attrib_values['booktitle'][0]) + '\t' + attrib_values['year'][0] + '\n')
+            f.write(str(attrib_values) + '\n')
         clear_element(elem)
     f.close()
     log_msg("FINISHED...")  # load the saved results line by line using json
+
 
 def parse_entity(dblp_path, save_path, type_name, features=None, save_to_csv=False, include_key=False):
     """Parse specific elements according to the given type name and features"""
@@ -237,6 +208,36 @@ def parse_publications(dblp_path, save_path, save_to_csv=False, include_key=Fals
     log_msg('Total publications found: {}, publications contain all features: {}, publications contain part of '
             'features: {}'.format(info[0] + info[1], info[0], info[1]))
     log_msg("Features information: {}".format(str(info[2])))
+    
+    
+def parse_filtered(dblp_path, save_path=None, include_key=False):
+    counter = 0
+    log_msg("PROCESS: Start parsing...")
+    f = open(save_path, 'w', encoding='utf8')
+    for _, elem in context_iter(dblp_path):
+        if elem.tag in my_elements:
+            attrib_values = extract_feature(elem, all_features, include_key)
+            print(attrib_values)
+            # print(etree.tostring(elem))
+           
+            # attrib_values = extract_feature(elem, all_features, include_key=True)
+            # print(elem.attrib)
+            # if not attrib_values['year']:
+            #    continue
+            # print(attrib_values['year'][0], attrib_values['title'][0])
+            # if int(attrib_values['year'][0]) < 2015:
+            #     continue
+            # if not all(s in attrib_values['title'][0] for s in ['priva', 'recommend']) or all(s in attrib_values['title'][0] for s in ['federate', 'recommend']):
+            #    continue
+            # for child in elem:
+            #    print(child.tag)
+            counter += 1
+            # print("found", counter)
+            # f.write('<a href="' + attrib_values['ee'][0] + '">link</a>\t' + attrib_values['key'][0] + '\t' + attrib_values['author'][0] + '\t' + (attrib_values['journal'][0] or attrib_values['booktitle'][0]) + '\t' + attrib_values['year'][0] + '\n')
+        clear_element(elem)
+    f.close()
+    log_msg("FINISHED...")  # load the saved results line by line using json
+
 
 
 def main():
@@ -248,8 +249,11 @@ def main():
     except IOError:
         log_msg("ERROR: Failed to load file \"{}\". Please check your XML and DTD files.".format(dblp_path))
         exit()
-    parse_all(dblp_path, save_path, True)
+    parse_all(dblp_path, save_path, save_to_csv=False)
 
 
 if __name__ == '__main__':
     main()
+
+    
+
