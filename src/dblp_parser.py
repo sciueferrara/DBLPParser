@@ -83,7 +83,7 @@ def extract_feature(elem, features, include_key=False):
     for feature in features:
         attribs[feature] = []
     for sub in elem:
-        print(sub)
+        print(sub.tag)
         if sub.tag not in features:
             continue
         if sub.tag == 'title':
