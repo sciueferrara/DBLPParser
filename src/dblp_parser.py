@@ -115,18 +115,20 @@ def parse_filtered(dblp_path, save_path=None, include_key=False):
     f = open(save_path, 'w', encoding='utf8')
     for _, elem in context_iter(dblp_path):
         if elem.tag in my_elements:
-            attrib_values = extract_feature(elem, all_features, include_key=True)
-            print(elem.attrib)
-            if not attrib_values['year']:
-                continue
-            print(attrib_values['year'][0], attrib_values['title'][0])
-            if int(attrib_values['year'][0]) < 2015:
-                continue
-            if not all(s in attrib_values['title'][0] for s in ['priva', 'recommend']) or all(s in attrib_values['title'][0] for s in ['federate', 'recommend']):
-                continue
+            # attrib_values = extract_feature(elem, all_features, include_key=True)
+            # print(elem.attrib)
+            # if not attrib_values['year']:
+            #    continue
+            # print(attrib_values['year'][0], attrib_values['title'][0])
+            # if int(attrib_values['year'][0]) < 2015:
+            #     continue
+            # if not all(s in attrib_values['title'][0] for s in ['priva', 'recommend']) or all(s in attrib_values['title'][0] for s in ['federate', 'recommend']):
+            #    continue
+            for child in elem:
+                print(child.tag)
             counter += 1
             print("found", counter)
-            f.write('<a href="' + attrib_values['ee'][0] + '">link</a>\t' + attrib_values['key'][0] + '\t' + attrib_values['author'][0] + '\t' + (attrib_values['journal'][0] or attrib_values['booktitle'][0]) + '\t' + attrib_values['year'][0] + '\n')
+            # f.write('<a href="' + attrib_values['ee'][0] + '">link</a>\t' + attrib_values['key'][0] + '\t' + attrib_values['author'][0] + '\t' + (attrib_values['journal'][0] or attrib_values['booktitle'][0]) + '\t' + attrib_values['year'][0] + '\n')
         clear_element(elem)
     f.close()
     log_msg("FINISHED...")  # load the saved results line by line using json
