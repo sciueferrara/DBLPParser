@@ -116,6 +116,8 @@ def parse_filtered(dblp_path, save_path=None, include_key=False):
     for _, elem in context_iter(dblp_path):
         if elem.tag in my_elements:
             print(elem)
+            for child in elem:
+                print(child)
             # attrib_values = extract_feature(elem, all_features, include_key=True)
             # print(elem.attrib)
             # if not attrib_values['year']:
