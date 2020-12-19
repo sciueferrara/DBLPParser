@@ -19,11 +19,11 @@ def extract_and_check_features(elem):
     attribs = {'key': elem.attrib['key']}
     for child in elem:
         if child.tag in all_features:
-            if child.tag == 'year' and int(child.text) < 2000:
+            if child.tag == 'year' and int(child.text) < 2015:
                 return
-            if child.tag == 'name'\
-                    and not (all(s in child.text for s in ['priva', 'recommend'])
-                             or all(s in child.text for s in ['federate', 'recommend'])):
+            if child.tag == 'title'\
+                    and not (all(s in child.text.lower() for s in ['priva', 'recommend'])
+                             or all(s in child.text.lower() for s in ['federated', 'recommend'])):
                 return
             if child.tag == 'author' and attribs.get('author'):
                 attribs['author'] = attribs['author'] + ', ' + child.text
