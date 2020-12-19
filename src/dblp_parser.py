@@ -115,7 +115,7 @@ def parse_filtered(dblp_path, save_path=None, include_key=False):
     f = open(save_path, 'w', encoding='utf8')
     for _, elem in context_iter(dblp_path):
         if elem.tag in my_elements:
-            print(echild.tostring(elem))
+            print(etree.tostring(elem))
            
             # attrib_values = extract_feature(elem, all_features, include_key=True)
             # print(elem.attrib)
