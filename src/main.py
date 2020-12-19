@@ -39,7 +39,6 @@ def parse(dblp_path, save_path):
             attribs = extract_and_check_features(e)
             if not attribs:
                 continue
-            print(attribs)
             counter += 1
             f.write('<a href="' + attribs.get('ee') + '">link</a>\t' + attribs.get('key') + '\t' +
                     attribs.get('author') + '\t' +
