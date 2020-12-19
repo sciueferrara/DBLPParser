@@ -33,17 +33,18 @@ def extract_and_check_features(elem):
 
 def parse(dblp_path, save_path):
     f = open(save_path, 'w', encoding='utf8')
+    counter = 0
     for _, e in context_iter(dblp_path):
         if e.tag in my_elements:
             attribs = extract_and_check_features(e)
             if not attribs:
                 continue
+            counter += 1
             f.write('<a href="' + attribs.get('ee') + '">link</a>\t' + attribs.get('key') + '\t' +
                     attribs.get('author') + '\t' +
                     (attribs.get('journal') or attribs.get('booktitle')) + '\t' +
                     attribs.get('year') + '\n')
-            print(attribs)
-    f.write('ciao')
+            print('*** found ', counter)
     f.close()
 
 
