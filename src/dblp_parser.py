@@ -7,6 +7,7 @@ import re
 
 # all of the element types in dblp
 all_elements = {"article", "inproceedings", "proceedings", "book", "incollection", "phdthesis", "mastersthesis", "www"}
+my_elements = {"article", "inproceedings"}
 # all of the feature types in dblp
 all_features = {"address", "author", "booktitle", "cdrom", "chapter", "cite", "crossref", "editor", "ee", "isbn",
                 "journal", "month", "note", "number", "pages", "publisher", "school", "series", "title", "url",
@@ -113,7 +114,7 @@ def parse_filtered(dblp_path, save_path=None, include_key=False):
     log_msg("PROCESS: Start parsing...")
     f = open(save_path, 'w', encoding='utf8')
     for _, elem in context_iter(dblp_path):
-        if elem.tag in all_elements:
+        if elem.tag in my_elements:
             attrib_values = extract_feature(elem, all_features, include_key=True)
             print(attrib_values['year'])
             if not attrib_values['year']:
