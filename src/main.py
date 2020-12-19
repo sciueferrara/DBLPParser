@@ -31,7 +31,6 @@ def extract_and_check_features(elem):
                 attribs['author'] += ', ' + child.text
                 continue
             attribs[child.tag] = child.text
-            print(attribs)
     return attribs
 
 
