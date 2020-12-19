@@ -28,8 +28,10 @@ def extract_and_check_features(elem):
                              or all(s in child.text.lower() for s in ['federated', 'recommend'])):
                 return
             if child.tag == 'author' and attribs.get('author'):
-                attribs['author'] = attribs['author'] + ', ' + child.text
+                attribs['author'] += ', ' + child.text
+                continue
             attribs[child.tag] = child.text
+            print(attribs)
     return attribs
 
 
@@ -42,7 +44,7 @@ def parse(dblp_path, save_path):
             if not attribs:
                 continue
             counter += 1
-            f.write('<a href="' + (attribs.get('ee') or '') + '">link</a>\t' + attribs.get('key') + '\t' +
+            f.write('=COLLEG.IPERTESTUALE("' + (attribs.get('ee') or '') + '"; "link")\t' + attribs.get('key') + '\t' +
                     (attribs.get('author') or '') + '\t' +
                     (attribs.get('journal') or attribs.get('booktitle') or '') + '\t' +
                     (attribs.get('year') or '') + '\n')
