@@ -116,6 +116,7 @@ def parse_filtered(dblp_path, save_path=None, include_key=False):
             attrib_values = extract_feature(elem, all_features, include_key=True)
             if not attrib_values['year']:
                 continue
+            print(attrib_values['year'][0], attrib_values['title'][0])
             if int(attrib_values['year'][0]) < 2015:
                 continue
             if not all(s in attrib_values['title'][0] for s in ['priva', 'recommend']) or all(s in attrib_values['title'][0] for s in ['federate', 'recommend']):
