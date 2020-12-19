@@ -40,10 +40,10 @@ def parse(dblp_path, save_path):
             if not attribs:
                 continue
             counter += 1
-            f.write('<a href="' + attribs.get('ee') + '">link</a>\t' + attribs.get('key') + '\t' +
-                    attribs.get('author') + '\t' +
+            f.write('<a href="' + (attribs.get('ee') or '') + '">link</a>\t' + attribs.get('key') + '\t' +
+                    (attribs.get('author') or '') + '\t' +
                     (attribs.get('journal') or attribs.get('booktitle') or '') + '\t' +
-                    attribs.get('year') + '\n')
+                    (attribs.get('year') or '') + '\n')
             print('*** found ', counter)
     f.close()
 
