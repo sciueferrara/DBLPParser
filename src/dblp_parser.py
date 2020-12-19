@@ -238,7 +238,7 @@ def main():
     except IOError:
         log_msg("ERROR: Failed to load file \"{}\". Please check your XML and DTD files.".format(dblp_path))
         exit()
-    parse_filtered(dblp_path)
+    parse_filtered(dblp_path, save_path)
 
 
 if __name__ == '__main__':
