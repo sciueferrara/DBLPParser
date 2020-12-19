@@ -109,10 +109,10 @@ def parse_all(dblp_path, save_path=None, include_key=False):
     
 def parse_filtered(dblp_path, save_path=None, include_key=False):
     log_msg("PROCESS: Start parsing...")
-    # f = open(save_path, 'w', encoding='utf8')
+    f = open(save_path, 'w', encoding='utf8')
     for _, elem in context_iter(dblp_path):
         if elem.tag in all_elements:
-            attrib_values = extract_feature(elem, all_features, include_key)
+            attrib_values = extract_feature(elem, all_features, include_key=True)
             if not attrib_values['year']:
                 continue
             if int(attrib_values['year'][0]) < 2015:
@@ -120,9 +120,9 @@ def parse_filtered(dblp_path, save_path=None, include_key=False):
             if not all(s in attrib_values['title'][0] for s in ['priva', 'recommend']) or all(s in attrib_values['title'][0] for s in ['federate', 'recommend']):
                 continue
             print(attrib_values)
-            # f.write(str(attrib_values) + '\n')
+            f.write('<a href="' + attrib_values['ee'][0] + '">link</a>\t' + attrib_values['key'][0] + '\t' + attrib_values['author'][0] + '\t' + (attrib_values['journal'][0] or attrib_values['booktitle'][0]) + '\t' + attrib_values['year'][0] + '\n')
         clear_element(elem)
-    # f.close()
+    f.close()
     log_msg("FINISHED...")  # load the saved results line by line using json
 
 def parse_entity(dblp_path, save_path, type_name, features=None, save_to_csv=False, include_key=False):
