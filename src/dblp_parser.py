@@ -108,6 +108,7 @@ def parse_all(dblp_path, save_path=None, include_key=False):
 
     
 def parse_filtered(dblp_path, save_path=None, include_key=False):
+    counter = 0
     log_msg("PROCESS: Start parsing...")
     f = open(save_path, 'w', encoding='utf8')
     for _, elem in context_iter(dblp_path):
@@ -119,7 +120,8 @@ def parse_filtered(dblp_path, save_path=None, include_key=False):
                 continue
             if not all(s in attrib_values['title'][0] for s in ['priva', 'recommend']) or all(s in attrib_values['title'][0] for s in ['federate', 'recommend']):
                 continue
-            print(attrib_values)
+            counter += 1
+            print("found", counter)
             f.write('<a href="' + attrib_values['ee'][0] + '">link</a>\t' + attrib_values['key'][0] + '\t' + attrib_values['author'][0] + '\t' + (attrib_values['journal'][0] or attrib_values['booktitle'][0]) + '\t' + attrib_values['year'][0] + '\n')
         clear_element(elem)
     f.close()
