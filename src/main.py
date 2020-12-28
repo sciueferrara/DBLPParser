@@ -25,8 +25,15 @@ def extract_and_check_features(elem):
                 return
             if child.tag == 'title'\
                     and not (all(s in child.text.lower() for s in ['priva', 'recommend'])
-                             or all(s in child.text.lower() for s in ['federated', 'recommend'])):
+                             or all(s in child.text.lower() for s in ['federated', 'recommend'])
+                             or all(s in child.text.lower() for s in ['priva', 'distributed', 'recommend'])
+                             or all(s in child.text.lower() for s in ['priva', 'decentralized', 'recommend'])
+                             or all(s in child.text.lower() for s in ['priva', 'factorization'])):
                 return
+            if child.tag == 'title':
+                attribs['title'] = child.text
+                kws = [kw for kw in ('priva', 'recommend', 'federated', 'distributed', 'decentralized', 'factorization') if kw in child.text]
+                attribs['kw'] = ', '.join(kws)
             if child.tag == 'author' and attribs.get('author'):
                 attribs['author'] += ', ' + child.text
                 continue
@@ -44,7 +51,7 @@ def parse(dblp_path, save_path):
                 continue
             counter += 1
             f.write('=COLLEG.IPERTESTUALE("' + (attribs.get('ee') or '') + '"; "link")\t' + attribs.get('key') + '\t' +
-                    (attribs.get('author') or '') + '\t' +
+                    (attribs.get('kws')) + '\t' + (attribs.get('title')) + '\t' + (attribs.get('author') or '') + '\t' +
                     (attribs.get('journal') or attribs.get('booktitle') or '') + '\t' +
                     (attribs.get('year') or '') + '\n')
             print('*** found ', counter)
