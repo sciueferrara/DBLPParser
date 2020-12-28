@@ -51,7 +51,7 @@ def parse(dblp_path, save_path):
                 continue
             counter += 1
             f.write('=COLLEG.IPERTESTUALE("' + (attribs.get('ee') or '') + '"; "link")\t' + attribs.get('key') + '\t' +
-                    attribs.get('kws') + '\t' + attribs.get('title') + '\t' + (attribs.get('author') or '') + '\t' +
+                    attribs.get('kw') + '\t' + attribs.get('title') + '\t' + (attribs.get('author') or '') + '\t' +
                     (attribs.get('journal') or attribs.get('booktitle') or '') + '\t' +
                     (attribs.get('year') or '') + '\n')
             print('*** found ', counter)
