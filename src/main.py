@@ -32,7 +32,7 @@ def extract_and_check_features(elem):
                 return
             if child.tag == 'title':
                 attribs['title'] = child.text
-                kws = [kw for kw in ('priva', 'recommend', 'federated', 'distributed', 'decentralized', 'factorization') if kw in child.text]
+                kws = [kw for kw in ('priva', 'recommend', 'federated', 'distributed', 'decentralized', 'factorization') if kw in child.text.lower()]
                 attribs['kw'] = ', '.join(kws)
             if child.tag == 'author' and attribs.get('author'):
                 attribs['author'] += ', ' + child.text
